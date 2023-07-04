@@ -752,7 +752,6 @@ Processes can be played, paused or killed through the :meth:`~aiida.engine.proce
     from aiida.engine.processes import control
 
     processes = [load_node(<PK1>), load_node(<PK2>)]
-
     pause_processes(processes)  # Pause the processes
     play_processes(processes)  # Play them again
     kill_processes(processes)  # Kill the processes

@@ -239,19 +239,23 @@ Moreover, we recommend to consult the documentation of `mod_wsgi <https://modwsg
 Serving multiple profiles
 =========================
 
+<<<<<<< HEAD
 A single REST API instance can serve data from all profiles of an AiiDA instance.
+=======
+A single REST API instance can serve data from all profiles of an AiiDA instance. 
+>>>>>>> 602c3b225 (documenting the "multiple profile serving" for a single REST API instance.)
 To maintain backwards compatibility, the new functionality needs to be explicitly enabled through the configuration:
 
 .. code-block:: bash
 
-    verdi config set rest_api.profile_switching true
+    verdi config set rest_api.profile_switching True
 
 After the REST API is restarted, it will now accept the profile query parameter, for example:
 
-.. code-block:: console
+.. code-block:: python
 
     http://127.0.0.1:5000/api/v4/computers?profile=some-profile-name
 
-If the specified profile is already loaded, the REST API functions exactly as without profile switching enabled.
+f the specified is already loaded, the REST API functions exactly as without profile switching enabled. 
 If another profile is specified, the REST API will first switch profiles before executing the request.
 If the profile parameter is specified in a request and the REST API does not have profile switching enabled, a 400 response is returned.
