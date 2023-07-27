@@ -191,9 +191,9 @@ class KpointsData(ArrayData):
 
         :param structuredata: an instance of StructureData
         """
-        from aiida.orm import StructureData
-
-        if not isinstance(structuredata, StructureData):
+        from aiida.orm import StructureData as LegacyStructureData
+        from aiida_atomistic.data.structure import StructureData
+        if not isinstance(structuredata, StructureData) and not isinstance(structuredata, LegacyStructureData):
             raise ValueError(
                 'An instance of StructureData should be passed to '
                 'the KpointsData, found instead {}'.format(structuredata.__class__)
