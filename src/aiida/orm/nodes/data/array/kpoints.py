@@ -18,11 +18,13 @@ import numpy
 from aiida.orm.fields import add_field
 
 from .array import ArrayData
+from aiida.plugins import DataFactory
 
 __all__ = ('KpointsData',)
 
 _DEFAULT_EPSILON_LENGTH = 1e-5
 _DEFAULT_EPSILON_ANGLE = 1e-5
+
 
 
 class KpointsData(ArrayData):
@@ -223,9 +225,9 @@ class KpointsData(ArrayData):
 
         :param structuredata: an instance of StructureData
         """
-        from aiida.orm import StructureData
-
-        if not isinstance(structuredata, StructureData):
+        from aiida.orm import StructureData as LegacyStructureData
+        StructureData = DataFactory("atomistic.structure")
+        if not isinstance(structuredata, StructureData) and not isinstance(structuredata, LegacyStructureData):
             raise ValueError(
                 'An instance of StructureData should be passed to ' 'the KpointsData, found instead {}'.format(
                     structuredata.__class__
