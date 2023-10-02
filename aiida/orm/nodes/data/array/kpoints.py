@@ -15,11 +15,13 @@ periodic crystal structure).
 import numpy
 
 from .array import ArrayData
+from aiida.plugins import DataFactory
 
 __all__ = ('KpointsData',)
 
 _DEFAULT_EPSILON_LENGTH = 1e-5
 _DEFAULT_EPSILON_ANGLE = 1e-5
+
 
 
 class KpointsData(ArrayData):
@@ -192,7 +194,7 @@ class KpointsData(ArrayData):
         :param structuredata: an instance of StructureData
         """
         from aiida.orm import StructureData as LegacyStructureData
-        from aiida_atomistic.data.structure import StructureData
+        StructureData = DataFactory("atomistic.structure")
         if not isinstance(structuredata, StructureData) and not isinstance(structuredata, LegacyStructureData):
             raise ValueError(
                 'An instance of StructureData should be passed to '
