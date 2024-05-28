@@ -22,6 +22,8 @@ from aiida.orm.fields import add_field
 
 from .data import Data
 
+from aiida_atomistic.data.structure import StructureData as AtomisticStructureData
+
 __all__ = ('StructureData', 'Kind', 'Site')
 
 # Threshold used to check if the mass of two different Site objects is the same.
@@ -769,6 +771,20 @@ class StructureData(Data):
                 pbc = [True, True, True]
             self.set_pbc(pbc)
 
+    def to_atomistic(self):
+        """
+        Returns the atomistic StructureData version of the orm.StructureData one.
+        """
+        atomistic = AtomisticStructureData(pbc=self.pbc, cell=self.cell)
+        for site in self.sites:
+            atomistic.append_atom(
+                symbol=self.get_kind(site.kind_name).symbol,
+                mass=self.get_kind(site.kind_name).mass,
+                position=site.position
+            )
+        
+        return atomistic
+    
     def get_dimensionality(self):
         """Return the dimensionality of the structure and its length/surface/volume.
 
