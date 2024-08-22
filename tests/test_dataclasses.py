@@ -1018,7 +1018,25 @@ class TestStructureDataInit:
 
 
 class TestStructureData:
-    """Tests the creation of StructureData objects (cell and pbc)."""
+    """Tests the creation of StructureData objects (cell and pbc), and its conversion to the new atomistic StructureData."""
+
+    def test_to_atomistic(self):
+        """Test the conversion to the atomistic structure."""
+
+        # Create a structure with a single atom
+        from aiida_atomistic import StructureData as AtomisticStructureData
+
+        a = StructureData(cell=((1.0, 0.0, 0.0), (0.0, 2.0, 0.0), (0.0, 0.0, 3.0)))
+        a.append_atom(position=(0.0, 0.0, 0.0), symbols=['Ba'], name='Ba1')
+
+        # Convert to atomistic structure
+        a = a.to_atomistic()
+
+        # Check that the structure is as expected
+        assert isinstance(a, AtomisticStructureData)
+        assert a.properties.sites[0].kind_name == 'Ba1'
+        assert a.properties.sites[0].position == [0.0, 0.0, 0.0]
+        assert a.properties.cell == [[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]]
 
     def test_cell_ok_and_atoms(self):
         """Test the creation of a cell and the appending of atoms"""

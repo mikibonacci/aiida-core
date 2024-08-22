@@ -233,8 +233,13 @@ class KpointsData(ArrayData):
                     structuredata.__class__
                 )
             )
-        cell = structuredata.cell
-        self.set_cell(cell, structuredata.pbc)
+
+        if isinstance(structuredata, LegacyStructureData):
+            cell = structuredata.cell
+            self.set_cell(cell, structuredata.pbc)
+        else:
+            cell = structuredata.properties.cell
+            self.set_cell(cell, structuredata.properties.pbc)
 
     def set_cell(self, cell, pbc=None):
         """Set a cell to be used for symmetry analysis.

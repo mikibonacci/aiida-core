@@ -22,7 +22,7 @@ from aiida.orm.fields import add_field
 
 from .data import Data
 
-from aiida_atomistic.data.structure import StructureData as AtomisticStructureData
+from aiida_atomistic import StructureDataMutable as AtomisticStructureDataMutable
 
 __all__ = ('StructureData', 'Kind', 'Site')
 
@@ -775,16 +775,16 @@ class StructureData(Data):
         """
         Returns the atomistic StructureData version of the orm.StructureData one.
         """
-        atomistic = AtomisticStructureData(pbc=self.pbc, cell=self.cell)
+        atomistic = AtomisticStructureDataMutable(pbc=self.pbc, cell=self.cell)
         for site in self.sites:
-            atomistic.append_atom(
+            atomistic.add_atom(
                 symbol=self.get_kind(site.kind_name).symbol,
                 mass=self.get_kind(site.kind_name).mass,
-                position=site.position
+                position=site.position,
+                kind_name=site.kind_name,
             )
-        
-        return atomistic
-    
+        return atomistic.to_immutable()
+
     def get_dimensionality(self):
         """Return the dimensionality of the structure and its length/surface/volume.
 
