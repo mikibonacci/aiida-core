@@ -778,11 +778,14 @@ class StructureData(Data):
         atomistic = AtomisticStructureDataMutable(pbc=self.pbc, cell=self.cell)
         for site in self.sites:
             atomistic.add_atom(
-                symbol=self.get_kind(site.kind_name).symbol,
-                mass=self.get_kind(site.kind_name).mass,
-                position=site.position,
-                kind_name=site.kind_name,
+                atom_info={
+                    'symbol': self.get_kind(site.kind_name).symbol,
+                    'mass': self.get_kind(site.kind_name).mass,
+                    'position': site.position,
+                    'kind_name': site.kind_name,
+                    }
             )
+
         return atomistic.to_immutable()
 
     def get_dimensionality(self):
