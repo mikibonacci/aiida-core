@@ -22,8 +22,6 @@ from aiida.orm.fields import add_field
 
 from .data import Data
 
-from aiida_atomistic import StructureDataMutable as AtomisticStructureDataMutable
-
 __all__ = ('StructureData', 'Kind', 'Site')
 
 # Threshold used to check if the mass of two different Site objects is the same.
@@ -775,6 +773,7 @@ class StructureData(Data):
         """
         Returns the atomistic StructureData version of the orm.StructureData one.
         """
+        from aiida_atomistic import StructureDataMutable as AtomisticStructureDataMutable
         atomistic = AtomisticStructureDataMutable(pbc=self.pbc, cell=self.cell)
         for site in self.sites:
             atomistic.add_atom(
