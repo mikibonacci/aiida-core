@@ -773,7 +773,13 @@ class StructureData(Data):
         """
         Returns the atomistic StructureData version of the orm.StructureData one.
         """
-        from aiida_atomistic import StructureDataMutable as AtomisticStructureDataMutable
+        try:
+            from aiida_atomistic import StructureData as AtomisticStructureData
+            from aiida_atomistic import StructureDataMutable as AtomisticStructureDataMutable
+        except ImportError:
+            raise ImportError('aiida-atomistic plugin is not installed, \
+                please install it to have full support for atomistic structures')
+
         atomistic = AtomisticStructureDataMutable(pbc=self.pbc, cell=self.cell)
         for site in self.sites:
             atomistic.add_atom(
@@ -785,7 +791,7 @@ class StructureData(Data):
                     }
             )
 
-        return atomistic.to_immutable()
+        return AtomisticStructureData.from_mutable(atomistic)
 
     def get_dimensionality(self):
         """Return the dimensionality of the structure and its length/surface/volume.
